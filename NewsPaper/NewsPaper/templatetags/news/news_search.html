@@ -1,0 +1,23 @@
+{% extends 'news/default.html' %}
+{% load custom_filters %}
+
+{% block content %}
+    <h2>Поиск новостей</h2>
+
+    <form method="get">
+        {{ filter.form.as_p }}
+        <button type="submit">Искать</button>
+    </form>
+
+    <ul>
+        {% for post in page_obj %}
+            <li>
+                <h3>{{ post.title|censor }}</h3>
+                <p>{{ post.created_at|date:"d.m.Y" }}</p>
+                <p>{{ post.text|truncatechars:50|censor }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Пагинация (аналогично news_list.html) -->
+{% endblock %}

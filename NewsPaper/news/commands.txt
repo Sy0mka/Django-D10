@@ -1,0 +1,74 @@
+python manage.py shell
+
+from django.contrib.auth.models import User
+from news.models import Author, Category, Post, PostCategory, Comment
+
+user1 = User.objects.create_user(username='user1', password='123')
+user2 = User.objects.create_user(username='user2')
+
+author1 = Author.objects.create(user=user1)
+author2 = Author.objects.create(user=user2)
+
+cat1 = Category.objects.create(name='Спорт')
+cat2 = Category.objects.create(name='Политика')
+cat3 = Category.objects.create(name='Образование')
+cat4 = Category.objects.create(name='Технологии')
+
+post1 = Post.objects.create(
+    author=author1,
+    post_type='article',
+    title='Спорт в 2025 году',
+    text='Спорт становится всё популярнее, и это радует. Всё больше людей осознают важность физической активности для здоровья и благополучия. Современные технологии и д
+оступность информации делают занятия спортом удобными и разнообразными для каждого.'
+)
+post2 = Post.objects.create(
+    author=author2,
+    post_type='article',
+    title='Выборы 2024',
+    text='Вне зависимости от результатов выборов 2024 года, дебаты о роли Трампа в американской политике и его наследии, вероятно, останутся актуальными в 2025 году,
+ формируя политические дискуссии и стратегии.'
+)
+post3 = Post.objects.create(
+    author=author1,
+    post_type='news',
+    title='Новый iPhone',
+    text='Apple представила новый смартфон...'
+)
+
+post1.categories.add(cat1, cat3)
+post2.categories.add(cat2)
+post3.categories.add(cat4)
+
+comment1 = Comment.objects.create(post=post1, user=user1, text='Отличная статья!')
+comment2 = Comment.objects.create(post=post2, user=user2, text='Спорное мнение...')
+comment3 = Comment.objects.create(post=post3, user=user1, text='Жду новинку!')
+comment4 = Comment.objects.create(post=post1, user=user2, text='Не согласен')
+
+post1.like()
+post1.like()
+post2.dislike()
+comment1.like()
+comment2.dislike()
+
+author1.update_rating()
+author2.update_rating()
+
+print(author1.rating)
+print(author2.rating)
+
+best_author = Author.objects.order_by('-rating').first()
+print(f"Лучший автор: {best_author.user.username}, Рейтинг: {best_author.rating}")
+
+best_post = Post.objects.order_by('-rating').first()
+print(f"Дата: {best_post.created_at}")
+print(f"Автор: {best_post.author.user.username}")
+print(f"Рейтинг: {best_post.rating}")
+print(f"Заголовок: {best_post.title}")
+print(f"Превью: {best_post.preview()}")
+
+comments = Comment.objects.filter(post=best_post)
+for comment in comments:
+    print(f"Дата: {comment.created_at}")
+    print(f"Пользователь: {comment.user.username}")
+    print(f"Рейтинг: {comment.rating}")
+    print(f"Текст: {comment.text}\n")

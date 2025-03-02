@@ -1,0 +1,11 @@
+from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
+from news.models import Post
+
+common_group = Group.objects.create(name='common')
+authors_group = Group.objects.create(name='authors')
+
+post_content_type = ContentType.objects.get_for_model(Post)
+add_permission = Permission.objects.get(codename='add_post', content_type=post_content_type)
+change_permission = Permission.objects.get(codename='change_post', content_type=post_content_type)
+authors_group.permissions.add(add_permission, change_permission)

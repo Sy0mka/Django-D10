@@ -1,0 +1,3 @@
+{% if user not in authors_group.users.all %}
+    <a href="{% url 'become_author' %}">Стать автором</a>
+{% endif %}

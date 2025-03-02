@@ -1,0 +1,13 @@
+<html>
+<body>
+    <h2>Новые статьи за неделю в категории {{ category.name }}:</h2>
+    <ul>
+        {% for post in posts %}
+            <li>
+                <a href="http://your-site.com/news/{{ post.id }}/">{{ post.title }}</a>
+                <p>{{ post.text|truncatechars:50 }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

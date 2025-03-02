@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <p>Здравствуй, {{ user.username }}! Новая статья в твоём любимом разделе!</p>
+    <h3>{{ post.title }}</h3>
+    <p>{{ post.text|truncatechars:50 }}</p>
+    <a href="http://your-site.com/news/{{ post.id }}/">Читать полностью</a>
+</body>
+</html>
